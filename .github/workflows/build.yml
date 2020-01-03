@@ -32,7 +32,7 @@ jobs:
         name: Run Buildx
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/386,linux/arm/v6,linux/arm/v7 \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
             --output "type=image,push=true" \
             --tag docker.pkg.github.com/suika/opencv-video-minimal/opencv-video-minimal:latest \
             --file Dockerfile .

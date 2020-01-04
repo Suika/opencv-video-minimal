@@ -26,8 +26,6 @@ RUN apk add --update --no-cache \
     gstreamer gstreamer-dev \
     gst-plugins-base gst-plugins-base-dev \
     libgphoto2 libgphoto2-dev && \
-    apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-            --update --no-cache libtbb libtbb-dev && \
     # Python dependencies
     apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
             --update --no-cache python3 python3-dev && \
@@ -65,7 +63,7 @@ RUN apk add --update --no-cache \
         -D WITH_1394=NO \
         -D WITH_LIBV4L=NO \
         -D WITH_V4l=YES \
-        -D WITH_TBB=YES \
+        -D WITH_TBB=NO \
         -D WITH_FFMPEG=YES \
         -D WITH_GPHOTO2=YES \
         -D WITH_GSTREAMER=YES \
@@ -89,6 +87,6 @@ RUN apk add --update --no-cache \
     cd / && rm -vrf /tmp/opencv-$OPENCV_VERSION && \
     apk del --purge build-base clang clang-dev cmake pkgconf wget openblas-dev \
                     openexr-dev gstreamer-dev gst-plugins-base-dev libgphoto2-dev \
-                    libtbb-dev libjpeg-turbo-dev libpng-dev tiff-dev jasper-dev \
+                    libjpeg-turbo-dev libpng-dev tiff-dev jasper-dev \
                     ffmpeg-dev libavc1394-dev python3-dev && \
     rm -vrf /var/cache/apk/*

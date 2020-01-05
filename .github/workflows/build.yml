@@ -78,10 +78,22 @@ jobs:
             suika/opencv-video-minimal:s390x \
             suika/opencv-video-minimal:386 \
             suika/opencv-video-minimal:v7 \
+            suika/opencv-video-minimal:v6
+          docker manifest create suika/opencv-video-minimal:latest \
+            suika/opencv-video-minimal:amd64 \
+            suika/opencv-video-minimal:arm64 \
+            suika/opencv-video-minimal:ppc64le \
+            suika/opencv-video-minimal:s390x \
+            suika/opencv-video-minimal:386 \
+            suika/opencv-video-minimal:v7 \
+            suika/opencv-video-minimal:v6
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
       -
         name: Push manifest
         run: |
             docker manifest push suika/opencv-video-minimal:4.2-py3.7.5
+            docker manifest push suika/opencv-video-minimal:latest
       - 
         name: Docker logout
         run: |

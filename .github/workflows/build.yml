@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: [ubuntu-latest]
-    strategy:
-      matrix:
-        buildx_arch: [linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6]
     steps:
       -
         name: Checkout
@@ -32,12 +29,12 @@ jobs:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
       -
-        name: Run Buildx ${{ matrix.buildx_arch }}
+        name: Run Buildx
         run: |
           docker buildx build \
-            --platform ${{ matrix.buildx_arch }} \
+            --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 \
             --output "type=image,push=true" \
-            --tag suika/opencv-video-minimal:latest \
+            --tag suika/opencv-video-minimal:4.2-py3.7.5 \
             --file Dockerfile .
       - 
         name: Docker logout

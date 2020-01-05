@@ -27,17 +27,17 @@ jobs:
       - 
         name: Docker login
         run: |
-          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}" docker.pkg.github.com
+          docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}"
         env:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-          DOCKER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
       -
         name: Run Buildx ${{ matrix.buildx_arch }}
         run: |
           docker buildx build \
             --platform ${{ matrix.buildx_arch }} \
             --output "type=image,push=true" \
-            --tag docker.pkg.github.com/suika/opencv-video-minimal/opencv-video-minimal:latest \
+            --tag suika/opencv-video-minimal:latest \
             --file Dockerfile .
       - 
         name: Docker logout

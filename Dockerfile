@@ -26,9 +26,12 @@ RUN apk add --update --no-cache \
     gstreamer gstreamer-dev \
     gst-plugins-base gst-plugins-base-dev \
     libgphoto2 libgphoto2-dev && \
+    # Check if x86_64 or x86 and install libtbb
+    if [ $(uname -m) == 'x86_64' ] || [ $(uname -m) == 'x86' ]; then \
+    apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+            --update --no-cache libtbb libtbb-dev ; fi && \
     # Python dependencies
-    apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-            --update --no-cache python3 python3-dev && \
+    apk add --no-cache python3=3.7.5-r1 python3-dev=3.7.5-r1 && \
     #apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     #        --update --no-cache py-numpy py-numpy-dev && \
     # Update also musl to avoid an Alpine bug
@@ -63,7 +66,7 @@ RUN apk add --update --no-cache \
         -D WITH_1394=NO \
         -D WITH_LIBV4L=NO \
         -D WITH_V4l=YES \
-        -D WITH_TBB=NO \
+        -D WITH_TBB=$(if [ $(uname -m) == 'x86_64' ] || [ $(uname -m) == 'x86' ]; then echo "YES"; else echo "NO"; fi) \
         -D WITH_FFMPEG=YES \
         -D WITH_GPHOTO2=YES \
         -D WITH_GSTREAMER=YES \
@@ -76,17 +79,18 @@ RUN apk add --update --no-cache \
         -D BUILD_opencv_python2=NO \
         -D BUILD_ANDROID_EXAMPLES=NO \
         # Build Python3 bindings only
-        -D PYTHON3_LIBRARY=`find /usr -name libpython3.so` \
-        -D PYTHON_EXECUTABLE=`which python3` \
-        -D PYTHON3_EXECUTABLE=`which python3` \
+        -D PYTHON3_LIBRARY=$(find /usr -name libpython3.so) \
+        -D PYTHON_EXECUTABLE=$(which python3) \
+        -D PYTHON3_EXECUTABLE=$(which python3) \
         -D BUILD_opencv_python3=YES .. && \
     # Build
-    make -j`grep -c '^processor' /proc/cpuinfo` && \
+    make -j$(nproc) && \
     make install && \
     # Cleanup
     cd / && rm -vrf /tmp/opencv-$OPENCV_VERSION && \
     apk del --purge build-base clang clang-dev cmake pkgconf wget openblas-dev \
                     openexr-dev gstreamer-dev gst-plugins-base-dev libgphoto2-dev \
                     libjpeg-turbo-dev libpng-dev tiff-dev jasper-dev \
-                    ffmpeg-dev libavc1394-dev python3-dev && \
+                    ffmpeg-dev libavc1394-dev python3-dev \
+                    $(if [ $(uname -m) == 'x86_64' ] || [ $(uname -m) == 'x86' ]; then echo "libtbb-dev"; fi) && \
     rm -vrf /var/cache/apk/*

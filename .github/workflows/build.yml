@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        buildx_arch: [linux/amd64,linux/arm64,linux/riscv64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6]
     steps:
       -
         name: Checkout
@@ -29,10 +32,10 @@ jobs:
           DOCKER_REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Run Buildx
+        name: Run Buildx ${{ matrix.buildx_arch }}
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --platform ${{ matrix.buildx_arch }} \
             --output "type=image,push=true" \
             --tag docker.pkg.github.com/suika/opencv-video-minimal/opencv-video-minimal:latest \
             --file Dockerfile .

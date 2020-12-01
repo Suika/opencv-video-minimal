@@ -1,13 +1,13 @@
 ################################################################################
-##  Dockerfile to build minimal OpenCV img with Python3.7 and Video support   ##
+##  Dockerfile to build minimal OpenCV img with Python3.8 and Video support   ##
 ################################################################################
-FROM alpine:3.10
+FROM alpine:3.12
 
 MAINTAINER Janos Czentye <czentye@tmit.bme.hu>
 
 ENV LANG=C.UTF-8
 
-ARG OPENCV_VERSION=4.2.0
+ARG OPENCV_VERSION=4.5.0
 
 RUN apk add --update --no-cache \
     # Build dependencies
@@ -18,7 +18,7 @@ RUN apk add --update --no-cache \
     libpng libpng-dev \
     libwebp libwebp-dev \
     tiff tiff-dev \
-    jasper-libs jasper-dev \
+    openjpeg openjpeg-dev openjpeg-tools \
     openexr openexr-dev \
     # Video depepndencies
     ffmpeg-libs ffmpeg-dev \
@@ -31,7 +31,7 @@ RUN apk add --update --no-cache \
     apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
             --update --no-cache libtbb libtbb-dev ; fi && \
     # Python dependencies
-    apk add --no-cache python3=3.7.5-r1 python3-dev=3.7.5-r1 && \
+    apk add --no-cache python3 python3-dev py3-pip && \
     #apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
     #        --update --no-cache py-numpy py-numpy-dev && \
     # Update also musl to avoid an Alpine bug
@@ -42,8 +42,8 @@ RUN apk add --update --no-cache \
     # Fix libpng path
     ln -vfs /usr/include/libpng16 /usr/include/libpng && \
     ln -vfs /usr/include/locale.h /usr/include/xlocale.h && \
-    pip3 install -v --no-cache-dir --upgrade pip && \
-    pip3 install -v --no-cache-dir numpy && \
+    python3 -m pip install -v --no-cache-dir --upgrade pip && \
+    python3 -m pip install -v --no-cache-dir numpy && \
     # Download OpenCV source
     cd /tmp && \
     wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.tar.gz && \
@@ -90,7 +90,8 @@ RUN apk add --update --no-cache \
     cd / && rm -vrf /tmp/opencv-$OPENCV_VERSION && \
     apk del --purge build-base clang clang-dev cmake pkgconf wget openblas-dev \
                     openexr-dev gstreamer-dev gst-plugins-base-dev libgphoto2-dev \
-                    libjpeg-turbo-dev libpng-dev tiff-dev jasper-dev \
+                    libjpeg-turbo-dev libpng-dev tiff-dev openjpeg-dev \
                     ffmpeg-dev libavc1394-dev python3-dev \
                     $(if [ $(uname -m) == 'x86_64' ] || [ $(uname -m) == 'x86' ]; then echo "libtbb-dev"; fi) && \
     rm -vrf /var/cache/apk/*
+

@@ -53,7 +53,7 @@ jobs:
           context: .
           push: true
           file: ./Dockerfile
-          tags: ghcr.io/suika/opencv-video-minimal:${{ env.BA_TAG }}
+          tags: ghcr.io/suika/opencv-video-minimal:${{ env.BA_TAG }},suika/opencv-video-minimal:${{ env.BA_TAG }}
           platforms: ${{ matrix.buildx_arch }}
           labels: |
             ${{ steps.docker_meta.outputs.labels }}

@@ -12,7 +12,7 @@ ARG OPENCV_VERSION=4.5.2
 RUN apk add --update --no-cache python3 py3-setuptools py3-pip && \
     apk add --update --no-cache --virtual opencv-build \
     # Build dependencies
-    ninja build-base clang clang-dev cmake pkgconf wget blas-dev hdf5-dev \
+    ninja build-base clang clang-dev cmake pkgconf wget openblas-dev hdf5-dev \
     linux-headers eigen-dev freetype-dev glew-dev harfbuzz-dev lapack-dev \
     libdc1394-dev py3-numpy-dev python3-dev libtbb-dev \
     # Image IO packages
@@ -73,7 +73,7 @@ RUN apk add --update --no-cache python3 py3-setuptools py3-pip && \
     # Cleanup
     cd / && rm -vrf /tmp/opencv-$OPENCV_VERSION && \
     apk del --purge opencv-build && \
-    apk add --update --no-cache blas libjpeg-turbo libpng libwebp tiff openjpeg openexr ffmpeg ffmpeg-libs \
+    apk add --update --no-cache openblas libjpeg-turbo libpng libwebp tiff openjpeg openexr ffmpeg ffmpeg-libs \
                        libgphoto2 libtbb gst-plugins-base gstreamer \
                        libdc1394 libgcc libstdc++ mesa-gl musl zlib && \
     rm -vrf /var/cache/apk/*

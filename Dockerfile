@@ -16,7 +16,7 @@ RUN apk add --no-cache python3 py3-setuptools py3-pip && \
     linux-headers eigen-dev freetype-dev glew-dev harfbuzz-dev lapack-dev \
     libdc1394-dev py3-numpy-dev python3-dev libtbb-dev \
     # Image IO packages
-    libjpeg-turbo-dev libpng-dev libwebp-dev vtk-dev tiff-dev \
+    libjpeg-turbo-dev libpng-dev libwebp-dev tiff-dev \
     openjpeg-dev openjpeg-tools openexr-dev \
     # Video depepndencies
     ffmpeg-libs ffmpeg-dev libavc1394-dev gstreamer-dev \

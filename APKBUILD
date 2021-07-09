@@ -6,7 +6,7 @@ pkgrel=0
 pkgdesc="An open source computer vision and machine learning library"
 url="https://opencv.org"
 # Other arches blocked by vtk-dev
-arch="x86_64 x86 aarch64 ppc64le"
+arch="all"
 license="BSD-3-Clause"
 subpackages="$pkgname-dbg $pkgname-dev"
 depends_dev="

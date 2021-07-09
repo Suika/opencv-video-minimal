@@ -3,7 +3,7 @@ ENV LANG=C.UTF-8
 
 WORKDIR /opt/opencv/
 COPY APKBUILD /opt/opencv/APKBUILD
-RUN apk add --update --no-cache alpine-sdk
+RUN apk add --update alpine-sdk
 RUN abuild-keygen -a -n
 RUN abuild -F -r
 

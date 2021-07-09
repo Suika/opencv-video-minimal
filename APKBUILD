@@ -29,7 +29,6 @@ depends_dev="
         py3-setuptools
         qt5-qtbase-dev
         py3-numpy-dev
-        vtk-dev
         "
 makedepends="$depends_dev
         cmake
